@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edulytics - Ta'lim Analitika Platformasi</title>
+    <link rel="icon" type="image/x-icon" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* ===== RESET & BASE STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #1a56db;
+            --primary-dark: #0f2a5e;
+            --primary-light: #3b82f6;
+            --accent-blue: #2563eb;
+            --accent-teal: #0d9488;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', 'Roboto', sans-serif;
+            color: var(--gray-900);
+            background-color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            color: var(--primary-blue);
+            font-size: 1.7rem;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary-dark);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        .nav-links a.active {
+            color: var(--primary-blue);
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-blue);
+        }
+
+        .nav-indicator {
+            position: absolute;
+            bottom: 0;
+            height: 3px;
+            background-color: var(--primary-blue);
+            transition: left 0.3s ease, width 0.3s ease;
+        }
+
+        /* ===== SECTIONS ===== */
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 6rem 0 4rem;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray-700);
+            margin-bottom: 3rem;
+            max-width: 700px;
+        }
+
+        .section-number {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 5rem;
+            font-weight: 800;
+            color: rgba(26, 86, 219, 0.05);
+            z-index: -1;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            display: inline-block;
+            padding: 0.85rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-blue);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-demo {
+            background-color: var(--accent-teal);
+            color: white;
+            box-shadow: var(--shadow-md);
+            margin-left: 1rem;
+        }
+
+        .btn-demo:hover {
+            background-color: #0b7c71;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            background: linear-gradient(135deg, #f6f9ff 0%, #ffffff 100%);
+            text-align: center;
+            padding-top: 8rem;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+            line-height: 1.1;
+        }
+
+        .hero-tagline {
+            font-size: 1.5rem;
+            color: var(--gray-700);
+            margin-bottom: 2.5rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--gray-700);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-bg {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(to right, #1a56db, #3b82f6);
+            opacity: 0.03;
+            z-index: -1;
+        }
+
+        /* ===== PROBLEMS SECTION ===== */
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .problem-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border-top: 4px solid var(--primary-blue);
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .problem-icon {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .problem-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        /* ===== SOLUTION SECTION ===== */
+        .solution-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .solution-list {
+            list-style: none;
+        }
+
+        .solution-list li {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .solution-list i {
+            color: var(--accent-teal);
+            font-size: 1.2rem;
+            margin-top: 0.3rem;
+            flex-shrink: 0;
+        }
+
+        .solution-visual {
+            background: linear-gradient(135deg, #1a56db, #0d9488);
+            border-radius: 1rem;
+            padding: 2rem;
+            color: white;
+            box-shadow: var(--shadow-lg);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* ===== FEATURES SECTION ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        /* ===== WEBVIEW SECTION ===== */
+        .webview-container {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            margin-top: 2rem;
+            height: 600px;
+        }
+
+        .webview-header {
+            background: var(--gray-100);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .webview-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .webview-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .webview-btn-red {
+            background-color: #ff5f56;
+        }
+
+        .webview-btn-yellow {
+            background-color: #ffbd2e;
+        }
+
+        .webview-btn-green {
+            background-color: #27ca3f;
+        }
+
+        .webview-url {
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--gray-700);
+            width: 60%;
+            text-align: center;
+            font-family: monospace;
+        }
+
+        .webview-content {
+            height: calc(100% - 53px);
+            display: flex;
+        }
+
+        .webview-sidebar {
+            background: var(--gray-50);
+            padding: 1.5rem;
+            border-right: 1px solid var(--gray-200);
+            width: 250px;
+            flex-shrink: 0;
+        }
+
+        .webview-pages-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .webview-pages {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .webview-page {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .webview-page:hover {
+            background: var(--gray-100);
+        }
+
+        .webview-page.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .page-preview {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 2rem;
+            overflow-y: auto;
+            background: white;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .page-preview.active-page {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .page-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+        }
+
+        .demo-frame {
+            width: 100%;
+            height: 400px;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-top: 1.5rem;
+            background: var(--gray-50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .demo-link {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .demo-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== CHATBOT SECTION ===== */
+        .chatbot-container {
+            max-width: 800px;
+            margin: 2rem auto 0;
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .chatbot-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .chatbot-icon {
+            font-size: 1.5rem;
+        }
+
+        .chatbot-messages {
+            height: 350px;
+            padding: 1.5rem;
+            overflow-y: auto;
+            background: var(--gray-50);
+        }
+
+        .message {
+            margin-bottom: 1.5rem;
+            max-width: 80%;
+        }
+
+        .message-bot {
+            margin-right: auto;
+        }
+
+        .message-user {
+            margin-left: auto;
+        }
+
+        .message-content {
+            padding: 1rem 1.25rem;
+            border-radius: 1rem;
+            background: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .message-bot .message-content {
+            background: white;
+            border-bottom-left-radius: 0.25rem;
+        }
+
+        .message-user .message-content {
+            background: var(--primary-blue);
+            color: white;
+            border-bottom-right-radius: 0.25rem;
+        }
+
+        .chatbot-input-container {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .chatbot-input {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.75rem;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .chatbot-quick-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .quick-question {
+            padding: 0.6rem 1.2rem;
+            background: var(--gray-100);
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .quick-question:hover {
+            background: var(--gray-200);
+        }
+
+        /* ===== FINANCIAL SECTION ===== */
+        .financial-data {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .financial-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+        }
+
+        .financial-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .chart-box {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ===== EXPANSION SECTION ===== */
+        .timeline {
+            max-width: 800px;
+            margin: 3rem auto 0;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary-blue);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .timeline-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-right: 2rem;
+            flex-shrink: 0;
+            z-index: 1;
+        }
+
+        .timeline-content {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            flex: 1;
+        }
+
+        /* ===== VALUE SECTION ===== */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .value-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border-top: 4px solid var(--accent-teal);
+            transition: var(--transition);
+        }
+
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* ===== TEAM SECTION ===== */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .team-member {
+            text-align: center;
+        }
+
+        .member-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--gray-200);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: var(--gray-700);
+        }
+
+        .team-member .member-avatar img {
+            width: 130px;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--primary-blue);
+            transition: transform 0.3s ease;
+        }
+
+        .team-member .member-avatar img:hover {
+            transform: scale(1.1);
+        }
+
+        .team-member .member-avatar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+
+        /* ===== INVESTOR CTA ===== */
+        .investor-cta {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-blue));
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-radius: 1rem;
+            margin-top: 4rem;
+        }
+
+        .investor-cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .investor-cta p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--primary-dark);
+            color: white;
+            padding: 4rem 0 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-text {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            color: var(--gray-300);
+        }
+
+        .copyright {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray-300);
+            font-size: 0.9rem;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+
+            .solution-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .webview-content {
+                flex-direction: column;
+            }
+
+            .webview-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--gray-200);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 2.4rem;
+            }
+
+            .hero-tagline {
+                font-size: 1.3rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .financial-data {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 1.5rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .investor-cta h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <div class="nav-container">
+        <nav>
+            <div class="logo">
+                <div class="logo-icon">
+                    <image src="logo.png" alt="Edulytics Logo" width="60" height="60" />
+                </div>
+                <div class="logo-text">Edulytics</div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Bosh Sahifa</a></li>
+                <li><a href="#problems">Muammolar</a></li>
+                <li><a href="#solution">Yechim</a></li>
+                <li><a href="#features">Imkoniyatlar</a></li>
+                <li><a href="#chatbot">AI Yordamchi</a></li>
+                <li><a href="#financial">Moliyaviy Tahlil</a></li>
+                <li><a href="#expansion">Kengayish</a></li>
+                <li><a href="#value">Investor Uchun</a></li>
+                <li><a href="#team">Jamoa</a></li>
+            </ul>
+        </nav>
+        <div class="nav-indicator" id="navIndicator"></div>
+    </div>
+
+    <!-- Section 1: Startup Name & Concept -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="section-number">01</div>
+            <h1 class="hero-title fade-in">Edulytics</h1>
+            <p class="hero-tagline fade-in">"O'quv markazlari uchun yagona monitoring va tanlash platformasi"</p>
+            <p class="hero-description fade-in">
+                Edulytics — bu o'quv markazlari, o'quvchilar va o'qituvchilarni yagona raqamli ekotizimga
+                birlashtiruvchi platforma.
+                Loyiha ta'lim bozorida shaffoflik, ishonch va qulaylik yaratish uchun ishlab chiqilgan.
+            </p>
+            <div class="fade-in">
+                <a href="#problems" class="btn btn-primary">Batafsil-></a>
+                <a href="#financial" class="btn btn-demo">Moliyaviy Ko'rsatkichlar</a>
+            </div>
+        </div>
+        <div class="hero-bg"></div>
+    </section>
+
+    <!-- Section 2: Problems -->
+    <section id="problems">
+        <div class="container">
+            <div class="section-number">02</div>
+            <h2 class="section-title slide-in-left">Hozirgi Ta'lim Bozoridagi Muammolar</h2>
+            <p class="section-subtitle slide-in-left">
+                Bugungi kunda o'quv markazlari bozorida tizimsizlik, shaffoflik yo'qligi va ishonchsizlik kabi muammolar
+                mavjud.
+            </p>
+
+            <div class="problems-grid">
+                <div class="problem-card fade-in">
+                    <div class="problem-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h3 class="problem-title">Tizimsiz Bozor</h3>
+                    <p>O'quv markazlari alohida-alohida ishlaydi, bozorda markazlashtirilgan platforma yo'q. Bu
+                        o'quvchilarga kurs tanashda qiyinchilik tug'diradi.</p>
+                </div>
+
+                <div class="problem-card fade-in">
+                    <div class="problem-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="problem-title">Sifatli Kurs Topish Qiyin</h3>
+                    <p>O'quvchilar sifatli kurslarni qidirishda qiymat, o'qituvchi malakasi va natijalarni solishtira
+                        olmaydi. 72% o'quvchi kurs tanashda qiyinchilik chekadi.</p>
+                </div>
+
+                <div class="problem-card fade-in">
+                    <div class="problem-icon">
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <h3 class="problem-title">Ishonchsiz Reytinglar</h3>
+                    <p>Mavjud reyting tizimlari ishonchsiz yoki umuman yo'q. 85% o'quvchi internetdagi sharhlarga
+                        ishonmaydi, chunki ular haqiqiy emas deb hisoblaydi.</p>
+                </div>
+
+                <div class="problem-card fade-in">
+                    <div class="problem-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3 class="problem-title">Markazlarning Yomon Vizibiliteti</h3>
+                    <p>O'quv markazlari o'z xizmatlarini to'g'ri namoyish qila olmaydi. Talabgorlarga yetib bora
+                        olmaslik ularning o'sishini cheklaydi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Solution -->
+    <section id="solution">
+        <div class="container">
+            <div class="section-number">03</div>
+            <h2 class="section-title slide-in-right">Yechim – Edulytics Qanday Yechim Beradi?</h2>
+            <p class="section-subtitle slide-in-right">
+                Edulytics barcha o'quv markazlarni yagona platformaga jamlaydi va barcha qatnashchilar uchun qulaylik
+                yaratadi.
+            </p>
+
+            <div class="solution-content">
+                <div class="solution-text">
+                    <ul class="solution-list">
+                        <li class="fade-in">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>Yagona Platforma:</strong> Barcha o'quv markazlari bir platformada. O'quvchilar
+                                barcha kurslarni bir joyda ko'radi va solishtiradi.
+                            </div>
+                        </li>
+                        <li class="fade-in">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>Aqlli Qidiruv va Solishtirish:</strong> O'quvchilar kurslarni fan, narx,
+                                joylashuv, vaqt bo'yicha qidiradi va filtrlashi mumkin.
+                            </div>
+                        </li>
+                        <li class="fade-in">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>Shaffof Reytinglar:</strong> Tasdiqlangan sharhlar va ma'lumotlar asosidagi
+                                reytinglar. Har bir kurs va markaz haqida ishonchli ma'lumot.
+                            </div>
+                        </li>
+                        <li class="fade-in">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>Boshqarish Vositalari:</strong> Markazlar o'z xizmatlarini, yangiliklarni va
+                                o'quvchilar bilan muloqotni boshqaradi.
+                            </div>
+                        </li>
+                        <li class="fade-in">
+                            <i class="fas fa-check-circle"></i>
+                            <div>
+                                <strong>Ma'lumotlar Asosida Qarorlar:</strong> Barcha operatsiyalar shaffof ma'lumotlar
+                                va analitika asosida amalga oshiriladi.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="solution-visual fade-in">
+                    <h3 style="color: white; margin-bottom: 1.5rem; font-size: 1.8rem;">Edulytics Ekotizimi</h3>
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="background: rgba(255,255,255,0.2); padding: 0.75rem; border-radius: 50%;">
+                                <i class="fas fa-school"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 0.25rem;">O'quv Markazlari</h4>
+                                <p style="opacity: 0.9; font-size: 0.9rem;">Kurslarni boshqarish, o'quvchilar va
+                                    analitika</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="background: rgba(255,255,255,0.2); padding: 0.75rem; border-radius: 50%;">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 0.25rem;">O'quvchilar</h4>
+                                <p style="opacity: 0.9; font-size: 0.9rem;">Kurslarni topish, solishtirish va yozilish
+                                </p>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="background: rgba(255,255,255,0.2); padding: 0.75rem; border-radius: 50%;">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin-bottom: 0.25rem;">O'qituvchilar</h4>
+                                <p style="opacity: 0.9; font-size: 0.9rem;">Darslarni boshqarish va o'quvchilarni
+                                    kuzatish</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.2);">
+                        <h4 style="margin-bottom: 0.5rem;">Platforma Afzalliklari:</h4>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <span
+                                style="background: rgba(255,255,255,0.2); padding: 0.4rem 0.8rem; border-radius: 2rem; font-size: 0.85rem;">+40%
+                                samaradorlik</span>
+                            <span
+                                style="background: rgba(255,255,255,0.2); padding: 0.4rem 0.8rem; border-radius: 2rem; font-size: 0.85rem;">-35%
+                                vaqt</span>
+                            <span
+                                style="background: rgba(255,255,255,0.2); padding: 0.4rem 0.8rem; border-radius: 2rem; font-size: 0.85rem;">+90%
+                                ishonch</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Platform Features -->
+    <section id="features">
+        <div class="container">
+            <div class="section-number">04</div>
+            <h2 class="section-title slide-in-left">Platforma Imkoniyatlari</h2>
+            <p class="section-subtitle slide-in-left">
+                Edulytics ta'lim bozori tajribasini o'zgartirish uchun mo'ljallangan keng qamrovli vositalar to'plamini
+                taklif etadi.
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 1rem;">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Kurs Qidiruv va Filtrlash</h3>
+                    <p>Keng qamrovli qidiruv funktsiyasi fan, narx, joylashuv, vaqt va reytinglar bo'yicha filtrlash
+                        imkoniyati bilan.</p>
+                    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--primary-blue); font-weight: 600;">
+                        <i class="fas fa-chart-line"></i> 15+ filtrlash parametri
+                    </div>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 1rem;">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Reyting va Baholash Tizimi</h3>
+                    <p>Shaffof, tasdiqlangan reyting tizimi - har bir kurs va markaz uchun ko'p o'lchovli baholash.</p>
+                    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--primary-blue); font-weight: 600;">
+                        <i class="fas fa-shield-alt"></i> 100% ishonchli sharhlar
+                    </div>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 1rem;">
+                        <i class="fas fa-users-cog"></i>
+                    </div>
+                    <h3>Ko'p Rolli Boshqaruv Panellari</h3>
+                    <p>O'quvchi, o'qituvchi va administratorlar uchun maxsus dizayn qilingan boshqaruv panellari.</p>
+                    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--primary-blue); font-weight: 600;">
+                        <i class="fas fa-tachometer-alt"></i> Har bir rol uchun maxsus analitika
+                    </div>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 1rem;">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3>AI Yordamchi</h3>
+                    <p>Sun'iy intellekt yordamchisi kurs tanlash, martaba yo'llari va o'quv tavsiyalari bo'yicha tezkor
+                        maslahat beradi.</p>
+                    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--primary-blue); font-weight: 600;">
+                        <i class="fas fa-bolt"></i> 24/7 darhol javob
+                    </div>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 1rem;">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>Monitoring va Analitika</h3>
+                    <p>O'quv markazlari uchun keng qamrovli statistika va monitoring vositalari - samaradorlik va
+                        o'sishni kuzatish.</p>
+                    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--primary-blue); font-weight: 600;">
+                        <i class="fas fa-chart-bar"></i> Real vaqtda ma'lumotlar
+                    </div>
+                </div>
+
+                <div class="feature-card fade-in">
+                    <div style="font-size: 2rem; color: var(--primary-blue); margin-bottom: 1rem;">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobil Ilova</h3>
+                    <p>To'liq moslashuvchan platforma barcha qurilmalarda ishlaydi, mobil ilovalar kelajakda
+                        chiqariladi.</p>
+                    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--primary-blue); font-weight: 600;">
+                        <i class="fas fa-check-circle"></i> 100% mobil optimallashtirilgan
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Section 6: AI Chatbot -->
+    <section id="chatbot">
+        <div class="container">
+            <div class="section-number">06</div>
+            <h2 class="section-title slide-in-left">AI Yordamchi Interfeysi</h2>
+            <p class="section-subtitle slide-in-left">
+                Bizning aqlli yordamchingiz o'quvchilarga to'g'ri kurslarni topishda yordam beradi va darhol yordam
+                ko'rsatadi.
+            </p>
+
+            <div class="chatbot-container fade-in">
+                <div class="chatbot-header">
+                    <div class="chatbot-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 0.25rem;">Edulytics AI Yordamchi</h3>
+                        <p style="opacity: 0.9; font-size: 0.9rem;">AI demo rejimda, faqat avtomatlashtirilgan
+                            savollarga javob beradi</p>
+                    </div>
+                </div>
+
+                <div class="chatbot-messages" id="chatMessages">
+                    <div class="message message-bot">
+                        <div class="message-content">
+                            Salom! Men sizning Edulytics AI Yordamchingizman. Bugun qanday yordam bera olaman? Siz menga
+                            kurslar, martaba yo'llari yoki ta'lim tavsiyalari haqida so'rashingiz mumkin.
+                        </div>
+                    </div>
+                    <div class="message message-user">
+                        <div class="message-content">
+                            Yaxshi dasturlash kurslarini tavsiya qila olasizmi?
+                        </div>
+                    </div>
+                    <div class="message message-bot">
+                        <div class="message-content">
+                            Albatta! Joriy trendlar va o'quvchi fikrlari asosida men quyidagilarni tavsiya qilaman:
+                            <br><br>
+                            1. <strong>Web Dasturlash Bootcamp</strong> (4.8★) - To'liq stack dasturlash ta'limi
+                            <br>
+                            2. <strong>Python for Data Science</strong> (4.7★) - Analitika va mashina o'rganishga
+                            qaratilgan
+                            <br>
+                            3. <strong>Mobil Ilova Dasturlash</strong> (4.6★) - React Native bilan iOS & Android
+                            <br><br>
+                            Ushbu kurslardan birortasi haqida batafsil ma'lumot kerakmi?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chatbot-quick-questions">
+                    <div class="quick-question" data-question="Boshlovchilar uchun eng yaxshi kurslar qaysilar?">
+                        Boshlovchilar uchun kurslar</div>
+                    <div class="quick-question" data-question="Biznesga oid kurslarni tavsiya qiling">Biznes kurslari
+                    </div>
+                    <div class="quick-question" data-question="Qaysi kurslarda ishga joylashish foizi yuqori?">Yuqori
+                        ishga joylashish</div>
+                    <div class="quick-question" data-question="$200 dan arzon kurslarni ko'rsating">Arzon kurslar</div>
+                </div>
+
+                <div class="chatbot-input-container">
+                    <input type="text" class="chatbot-input" id="chatInput"
+                        placeholder="Savolingizni shu yerga yozing...">
+                    <button class="btn btn-primary" id="sendMessage">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;" class="fade-in">
+                <p>AI yordamchi real vaqtda 24/7 ishlaydi va har bir savolga 2 soniya ichida javob beradi.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: Financial Analysis -->
+    <section id="financial">
+        <div class="container">
+            <div class="section-number">07</div>
+            <h2 class="section-title slide-in-right">Moliyaviy Tahlil</h2>
+            <p class="section-subtitle slide-in-right">
+                Aniq daromad modeli, tez zararsizlik nuqtasi va kuchli o'sish potentsiali.
+            </p>
+
+            <div class="financial-data">
+                <div class="financial-card fade-in">
+                    <h3>Narx Modeli</h3>
+                    <div class="financial-value">$200</div>
+                    <p>Oylik har bir o'quv markazi uchun</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--gray-700);">+ 2 oy bepul sinov</p>
+                </div>
+
+                <div class="financial-card fade-in">
+                    <h3>1-yil Prognozi</h3>
+                    <div class="financial-value">50</div>
+                    <p>Hamkor o'quv markazlari</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--gray-700);">+25% har chorakda</p>
+                </div>
+
+                <div class="financial-card fade-in">
+                    <h3>Yillik Daromad</h3>
+                    <div class="financial-value">$55K</div>
+                    <p>Yalpi daromad (1-yil)</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--gray-700);">$110K 2-yilda prognoz</p>
+                </div>
+
+                <div class="financial-card fade-in">
+                    <h3>Zararsizlik Nuqtasi</h3>
+                    <div class="financial-value">6-7 oy</div>
+                    <p>Ishga tushirishdan keyin</p>
+                    <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--gray-700);">O'rtacha 9 oydan tezroq
+                    </p>
+                </div>
+            </div>
+
+            <div class="charts-container">
+                <div class="chart-box fade-in">
+                    <h3 style="margin-bottom: 1.5rem;">Daromad O'sish Prognozi</h3>
+                    <canvas id="revenueChart" height="200"></canvas>
+                </div>
+
+                <div class="chart-box fade-in">
+                    <h3 style="margin-bottom: 1.5rem;">Xarajatlar Tarkibi</h3>
+                    <canvas id="expenseChart" height="200"></canvas>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem; background: white; border-radius: 1rem; padding: 2rem; box-shadow: var(--shadow-md);"
+                class="fade-in">
+                <h3 style="margin-bottom: 1.5rem;">Moliyaviy Xulosa</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h4 style="margin-bottom: 1rem; color: var(--primary-dark);">Daromad Oqimlari</h4>
+                        <ul style="list-style: none;">
+                            <li style="margin-bottom: 0.75rem; display: flex; justify-content: space-between;">
+                                <span>Markazlar obunalari</span>
+                                <strong>$48,000</strong>
+                            </li>
+                            <li style="margin-bottom: 0.75rem; display: flex; justify-content: space-between;">
+                                <span>Premium funksiyalar</span>
+                                <strong>$5,000</strong>
+                            </li>
+                            <li style="margin-bottom: 0.75rem; display: flex; justify-content: space-between;">
+                                <span>Komissiya to'lovlari</span>
+                                <strong>$2,000</strong>
+                            </li>
+                            <li
+                                style="padding-top: 0.75rem; border-top: 1px solid var(--gray-200); display: flex; justify-content: space-between;">
+                                <strong>Jami Daromad</strong>
+                                <strong>$55,000</strong>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 1rem; color: var(--primary-dark);">Asosiy Xarajatlar</h4>
+                        <ul style="list-style: none;">
+                            <li style="margin-bottom: 0.75rem; display: flex; justify-content: space-between;">
+                                <span>Rivojlantirish & Texnik Xizmat</span>
+                                <strong>$22,000</strong>
+                            </li>
+                            <li style="margin-bottom: 0.75rem; display: flex; justify-content: space-between;">
+                                <span>Marketing & Sotuv</span>
+                                <strong>$12,000</strong>
+                            </li>
+                            <li style="margin-bottom: 0.75rem; display: flex; justify-content: space-between;">
+                                <span>Operatsiyalar & Qo'llab-quvvatlash</span>
+                                <strong>$7,500</strong>
+                            </li>
+                            <li
+                                style="padding-top: 0.75rem; border-top: 1px solid var(--gray-200); display: flex; justify-content: space-between;">
+                                <strong>Jami Xarajatlar</strong>
+                                <strong>$41,500</strong>
+                            </li>
+                            <li
+                                style="margin-top: 1rem; padding-top: 1rem; border-top: 2px solid var(--primary-blue); display: flex; justify-content: space-between; font-size: 1.2rem;">
+                                <strong>Sof Foyda (1-yil)</strong>
+                                <strong style="color: var(--primary-blue);">$13,500</strong>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Investor CTA -->
+            <div class="investor-cta fade-in">
+                <h2>Investorlar Uchun Ajoyib Imkoniyat</h2>
+                <p>Edulytics - bu tez o'sadigan ta'lim texnologiyalari bozorida birinchi o'rinni egallash imkoniyati.
+                    $50 million+ global bozor, 40% yillik o'sish sur'ati.</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                    <a href="#team" class="btn btn-primary">Jamoa Bilan Tanishing</a>
+                    <a href="#value" class="btn" style="background: white; color: var(--primary-blue);">Qo'shimcha
+                        Ma'lumot</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 8: Modernization & Expansion -->
+    <section id="expansion">
+        <div class="container">
+            <div class="section-number">08</div>
+            <h2 class="section-title slide-in-left">Modernizatsiya va Kengayish</h2>
+            <p class="section-subtitle slide-in-left">
+                Platforma evolyutsiyasi va bozor kengayishi uchun strategik yo'l xaritasi.
+            </p>
+
+            <div class="timeline">
+                <div class="timeline-item fade-in">
+                    <div class="timeline-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3 style="margin-bottom: 0.5rem;">Mobil Ilova Chiqarilishi</h3>
+                        <p>Kirish imkoniyatini va foydalanuvchi ishtirokini oshirish uchun iOS va Android mobil
+                            ilovalari. 2025-yil 4-chorakda rejalashtirilgan.</p>
+                        <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem;">
+                            <span
+                                style="background: var(--gray-100); padding: 0.25rem 0.75rem; border-radius: 2rem; font-size: 0.85rem;">+40%
+                                foydalanuvchi faolligi</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3 style="margin-bottom: 0.5rem;">AI Asosidagi Tavsiyalar</h3>
+                        <p>Shaxsiylashtirilgan kurs va martaba yo'li tavsiyalari uchun ilg'or mashina o'rganish
+                            algoritmlari.</p>
+                        <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem;">
+                            <span
+                                style="background: var(--gray-100); padding: 0.25rem 0.75rem; border-radius: 2rem; font-size: 0.85rem;">+35%
+                                konversiya darajasi</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3 style="margin-bottom: 0.5rem;">CRM va Korxona Integratsiyasi</h3>
+                        <p>Katta ta'lim muassasalari uchun mashhur CRM tizimlari va korxona yechimlari bilan
+                            integratsiya.</p>
+                        <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem;">
+                            <span
+                                style="background: var(--gray-100); padding: 0.25rem 0.75rem; border-radius: 2rem; font-size: 0.85rem;">B2B
+                                segmenti</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item fade-in">
+                    <div class="timeline-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h3 style="margin-bottom: 0.5rem;">Davlat va Xususiy Sektor Hamkorliklari</h3>
+                        <p>Keng qamrovli qabul qilinish uchun davlat ta'lim bo'limlari va xususiy sektor bilan
+                            hamkorlik.</p>
+                        <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem;">
+                            <span
+                                style="background: var(--gray-100); padding: 0.25rem 0.75rem; border-radius: 2rem; font-size: 0.85rem;">Milliy
+                                miqyosda kengayish</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 9: Investor Value -->
+    <section id="value">
+        <div class="container">
+            <div class="section-number">09</div>
+            <h2 class="section-title slide-in-right">Investor Uchun Qimmat</h2>
+            <p class="section-subtitle slide-in-right">
+                Edulytics aniq afzalliklar va o'sish potentsiali bilan jalb qiluvchi investitsiya imkoniyatini taklif
+                etadi.
+            </p>
+
+            <div class="value-grid">
+                <div class="value-card fade-in">
+                    <div style="font-size: 2.5rem; color: var(--accent-teal); margin-bottom: 1rem;">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Past Xarajat Darajasi</h3>
+                    <p>Samarali operatsion model minimal belgilangan xarajatlar va masshtablanadigan infratuzilma bilan.
+                    </p>
+                    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--accent-teal); font-weight: 600;">
+                        <i class="fas fa-coins"></i> $3,500/oy o'rtacha xarajat
+                    </div>
+                </div>
+
+                <div class="value-card fade-in">
+                    <div style="font-size: 2.5rem; color: var(--accent-teal); margin-bottom: 1rem;">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Tez Zararsizlik</h3>
+                    <p>Operatsiyaning 6-7 oyida foydaga erishish prognozi qilingan, aniq daromad oqimlari bilan.</p>
+                    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--accent-teal); font-weight: 600;">
+                        <i class="fas fa-rocket"></i> Sanoat o'rtachasidan 30% tezroq
+                    </div>
+                </div>
+
+                <div class="value-card fade-in">
+                    <div style="font-size: 2.5rem; color: var(--accent-teal); margin-bottom: 1rem;">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </div>
+                    <h3>Masshtablanadigan Model</h3>
+                    <p>Platforma arxitekturasi yangi bozorlar va foydalanuvchi segmentlariga tez kengayish uchun
+                        mo'ljallangan.</p>
+                    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--accent-teal); font-weight: 600;">
+                        <i class="fas fa-layer-group"></i> 3x o'sish 2 yil ichida
+                    </div>
+                </div>
+
+                <div class="value-card fade-in">
+                    <div style="font-size: 2.5rem; color: var(--accent-teal); margin-bottom: 1rem;">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Haqiqiy Bozor Muammosi</h3>
+                    <p>Ta'lim bozoridagi haqiqiy, keng tarqalgan muammoni isbotlangan talab bilan hal qiladi.</p>
+                    <div style="margin-top: 1rem; font-size: 0.9rem; color: var(--accent-teal); font-weight: 600;">
+                        <i class="fas fa-users"></i> 85% o'quvchi muammoni tasdiqlaydi
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 3rem; background: linear-gradient(135deg, var(--primary-blue), var(--primary-dark)); border-radius: 1rem; padding: 2.5rem; color: white;"
+                class="fade-in">
+                <h3 style="margin-bottom: 1rem; color: white;">Investitsiya Ustunliklari</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <ul style="list-style: none;">
+                            <li style="margin-bottom: 0.75rem; display: flex; align-items: flex-start; gap: 0.75rem;">
+                                <i class="fas fa-check" style="margin-top: 0.25rem;"></i>
+                                <span>$50 milliard+ global ta'lim texnologiyalari bozoriga ega</span>
+                            </li>
+                            <li style="margin-bottom: 0.75rem; display: flex; align-items: flex-start; gap: 0.75rem;">
+                                <i class="fas fa-check" style="margin-top: 0.25rem;"></i>
+                                <span>Yuqori saqlanish potentsiali bilan takroriy daromad modeli</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul style="list-style: none;">
+                            <li style="margin-bottom: 0.75rem; display: flex; align-items: flex-start; gap: 0.75rem;">
+                                <i class="fas fa-check" style="margin-top: 0.25rem;"></i>
+                                <span>Mintaqaviy ta'lim bozorida birinchi o'rinda bo'lish ustunligi</span>
+                            </li>
+                            <li style="margin-bottom: 0.75rem; display: flex; align-items: flex-start; gap: 0.75rem;">
+                                <i class="fas fa-check" style="margin-top: 0.25rem;"></i>
+                                <span>Tajribali jamoa texnologiya va ta'lim sohasida</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.2);">
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); text-align: center;">
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 700;">15-25x</div>
+                            <div style="font-size: 0.9rem; opacity: 0.9;">ROI potentsiali</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 700;">40%</div>
+                            <div style="font-size: 0.9rem; opacity: 0.9;">Yillik o'sish sur'ati</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 2rem; font-weight: 700;">$2.5M</div>
+                            <div style="font-size: 0.9rem; opacity: 0.9;">3-yil prognozli qiymat</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 10: Team -->
+    <section id="team">
+        <div class="container">
+            <div class="section-number">10</div>
+            <h2 class="section-title slide-in-left">Loyiha Mualliflari</h2>
+            <p class="section-subtitle slide-in-left">
+                Edulytics - texnologiya, ta'lim va innovatsiya sohasidagi mutaxassislar tomonidan ishlab chiqilgan
+                bo'lib, ta'lim landshaftini o'zgartirish uchun mo'ljallangan.
+            </p>
+
+            <div class="team-grid">
+                <div class="team-member fade-in">
+                    <div class="member-avatar">
+                        <image src="alixon.jpg" alt="Sattorov Alixon">
+                    </div>
+                    <h3>Sattorov Alixon</h3>
+                    <p style="color: var(--primary-blue); margin-bottom: 0.5rem;">Loyiha bosh rahbari & Mahsulot
+                        Arxitektori & Fronted dasturchi</p>
+                    <p>Loyihani tuzish va boshlang'ich dizaynlarni yaratish.</p>
+                </div>
+
+                <div class="team-member fade-in">
+                    <div class="member-avatar">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3>Tulakova Ziyoda</h3>
+                    <p style="color: var(--primary-blue); margin-bottom: 0.5rem;">Moliyaviy tahlilchi & Risk menejeri
+                    </p>
+                    <p></p>
+                </div>
+
+                <div class="team-member fade-in">
+                    <div class="member-avatar">
+                        <image src="mutaljon.jpg" alt="Muxammadjonov Mutaljon">
+                    </div>
+                    <h3>Muxammadjonov Mutaljon</h3>
+                    <p style="color: var(--primary-blue); margin-bottom: 0.5rem;">Dizayn & UX bo'yicha ma'sul</p>
+                    <p>Ta'lim interfeyslari va foydalanuvchi tajribasi bo'yicha ixtisoslashgan dizayner.</p>
+                </div>
+
+                <div class="team-member fade-in">
+                    <div class="member-avatar">
+                        <image src="asadbek.jpg" alt="Anvarov Asadbek">
+                    </div>
+                    <h3>Anvarov Asadbek</h3>
+                    <p style="color: var(--primary-blue); margin-bottom: 0.5rem;">Ta'lim Strategiyasi bo'yicha tahlilchi
+                    </p>
+                    <p>Ta'lim strategiyasini chuqur tahlil qilish.</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 4rem; text-align: center;" class="fade-in">
+                <h3 style="margin-bottom: 1rem;">Edulytics Vision</h3>
+                <p style="max-width: 800px; margin: 0 auto; font-size: 1.1rem;">
+                    Biz shaffof, samarali va kirish mumkin bo'lgan ta'lim ekotizimini yaratishga ishonamiz, bu erda har
+                    bir o'quvchi to'g'ri yo'lni topishi va har bir o'qituvchi o'z bilimini samarali baham ko'rishi
+                    mumkin. Edulytics nafaqat platforma - bu hammaga yaxshiroq ta'lim sari harakatdir.
+                </p>
+            </div>
+
+            <!-- Final Investor CTA -->
+            <div class="investor-cta fade-in" style="margin-top: 4rem;">
+                <h2>Investitsiya Imkoniyatidan Foydalaning</h2>
+                <p>Edulytics ga $500,000 investitsiya qilish taklifi: 15% kompaniya ulushi, 3 yil ichida 15-25x ROI
+                    potentsiali. Loyihani keyingi bosqichga olib chiqing.</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                    <a href="#" class="btn btn-primary"
+                        style="background: white; color: var(--primary-blue);">Investitsiya Tafsilotlari</a>
+                    <a href="https://t.me/edulytics" class="btn" style="background: var(--accent-teal);">Aloqa Qilish</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Edulytics</div>
+            <p class="footer-text">
+                Shaffoflik, texnologiya va innovatsiya orqali ta'limni o'zgartirish. Biz bilan birga o'rganish
+                kelajagini quring.
+            </p>
+
+            <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap;">
+                <a href="#home" style="color: white; text-decoration: none;">Bosh Sahifa</a>
+                <a href="#problems" style="color: white; text-decoration: none;">Muammolar</a>
+                <a href="#solution" style="color: white; text-decoration: none;">Yechim</a>
+                <a href="#financial" style="color: white; text-decoration: none;">Moliyaviy Tahlil</a>
+                <a href="#team" style="color: white; text-decoration: none;">Jamoa</a>
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; font-size: 1.5rem;">
+                <a href="https://t.me/edulytics" style="color: white;"><i class="fab fa-telegram"></i></a>
+                <a href="https://www.instagram.com/_sattorov_ali" style="color: white;"><i class="fab fa-instagram"></i></a>
+                <a href="tel:+998951884565" style="color: white;"><i class="fas fa-phone"></i></a>
+                <a href="mailto:uzedulytics@gmail.com?subject=Edulytics%20platformasi%20bo'yicha%20murojaat&body=Assalomu%20alaykum,%0A%0AMen%20Edulytics%20platformasi%20bo'yicha%20sizga%20murojaat%20qilmoqchiman." style="color: white;"><i class="fas fa-envelope"></i></a>
+            </div>
+
+            <div class="copyright">
+                © 2025 Edulytics. Barcha huquqlar himoyalangan. Bu investorlar va hamkorlar uchun taqdimot.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation indicator
+        document.addEventListener('DOMContentLoaded', function () {
+            // Navigation indicator
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const navIndicator = document.getElementById('navIndicator');
+
+            function updateNavIndicator() {
+                const activeLink = document.querySelector('.nav-links a.active');
+                if (activeLink) {
+                    const linkRect = activeLink.getBoundingClientRect();
+                    const navRect = document.querySelector('nav').getBoundingClientRect();
+
+                    navIndicator.style.width = `${linkRect.width}px`;
+                    navIndicator.style.left = `${linkRect.left - navRect.left}px`;
+                }
+            }
+
+            // Set initial position
+            setTimeout(updateNavIndicator, 100);
+
+            // Update on resize
+            window.addEventListener('resize', updateNavIndicator);
+
+            // Update on scroll
+            window.addEventListener('scroll', function () {
+                // Update active nav link based on scroll position
+                const sections = document.querySelectorAll('section');
+                let currentSectionId = '';
+
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    const sectionHeight = section.clientHeight;
+                    if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                        currentSectionId = section.id;
+                    }
+                });
+
+                // Update active link
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${currentSectionId}`) {
+                        link.classList.add('active');
+                    }
+                });
+
+                updateNavIndicator();
+
+                // Trigger animations
+                triggerAnimations();
+            });
+
+            // Smooth scrolling for nav links
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Webview page switching
+            const webviewPages = document.querySelectorAll('.webview-page');
+            const pagePreviews = document.querySelectorAll('.page-preview');
+            const currentUrl = document.getElementById('currentUrl');
+
+            webviewPages.forEach(page => {
+                page.addEventListener('click', function () {
+                    const pageId = this.getAttribute('data-page');
+                    const url = this.getAttribute('data-url');
+
+                    // Update active page in sidebar
+                    webviewPages.forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Update URL display
+                    currentUrl.textContent = url;
+
+                    // Show corresponding page preview
+                    pagePreviews.forEach(preview => {
+                        preview.classList.remove('active-page');
+                        if (preview.id === `page-${pageId}`) {
+                            preview.classList.add('active-page');
+                        }
+                    });
+                });
+            });
+
+            // Chatbot functionality
+            const chatInput = document.getElementById('chatInput');
+            const sendMessageBtn = document.getElementById('sendMessage');
+            const chatMessages = document.getElementById('chatMessages');
+            const quickQuestions = document.querySelectorAll('.quick-question');
+
+            function addMessage(message, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isUser ? 'message-user' : 'message-bot'}`;
+
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                contentDiv.textContent = message;
+
+                messageDiv.appendChild(contentDiv);
+                chatMessages.appendChild(messageDiv);
+
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            function getBotResponse(userMessage) {
+                const responses = {
+                    "boshlovchilar uchun eng yaxshi kurslar qaysilar?": "Boshlovchilar uchun men quyidagilarni tavsiya qilaman: 1) Dasturlashga Kirish (4.5★), 2) Raqamli Savodxonlik Asoslari (4.7★), va 3) Asosiy Biznes Ko'nikmalari (4.4★). Bu kurslar ajoyib o'quvchi yordami va asta-sekin o'rganish egri chizig'iga ega.",
+                    "biznesga oid kurslarni tavsiya qiling": "Eng yaxshi biznes kurslari: 1) Biznes Menejmenti Sertifikati (4.8★), 2) Raqamli Marketing Strategiyasi (4.6★), 3) Tadbirkorlar uchun Moliyaviy Savodxonlik (4.7★), va 4) Liderlik va Muloqot (4.9★).",
+                    "qaysi kurslarda ishga joylashish foizi yuqori?": "Ishga joylashish foizi yuqori (>85%) bo'lgan kurslar: 1) To'liq Stack Web Dasturlash (92%), 2) Ma'lumotlar Analitikasi (89%), 3) Kiberxavfsizlik Asoslari (87%), va 4) UX/UI Dizayn (86%).",
+                    "$200 dan arzon kurslarni ko'rsating": "$200 dan arzon sifatli kurslar: 1) Grafika Dizayni Asoslari ($189), 2) Pythonga Kirish ($179), 3) Kontent Yozish Mahorati ($159), 4) Ijtimoiy Media Marketingi ($199). Barchasi 4.0+ reytingga ega."
+                };
+
+                const defaultResponse = "Savolingiz uchun rahmat. Men sizga fan, narx oralig'i, davomiylik yoki martaba maqsadlari asosida kurslarni topishda yordam bera olaman. Iltimos, aniq nima izlayotganingizni aniqlab bering?";
+
+                return responses[userMessage.toLowerCase()] || defaultResponse;
+            }
+
+            sendMessageBtn.addEventListener('click', function () {
+                const message = chatInput.value.trim();
+                if (message) {
+                    addMessage(message, true);
+                    chatInput.value = '';
+
+                    // Simulate typing delay
+                    setTimeout(() => {
+                        const botResponse = getBotResponse(message);
+                        addMessage(botResponse, false);
+                    }, 800);
+                }
+            });
+
+            chatInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    sendMessageBtn.click();
+                }
+            });
+
+            quickQuestions.forEach(question => {
+                question.addEventListener('click', function () {
+                    const message = this.getAttribute('data-question');
+                    chatInput.value = message;
+                    sendMessageBtn.click();
+                });
+            });
+
+            // Initialize charts
+            function initializeCharts() {
+                // Revenue growth chart
+                const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+                const revenueChart = new Chart(revenueCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['1-2 oy', '3-4 oy', '5-6 oy', '7-8 oy', '9-10 oy', '11-12 oy'],
+                        datasets: [{
+                            label: 'Oylik Daromad ($)',
+                            data: [0, 4000, 8500, 12000, 16000, 20000],
+                            borderColor: '#2563eb',
+                            backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    callback: function (value) {
+                                        return '$' + value;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Expense breakdown chart
+                const expenseCtx = document.getElementById('expenseChart').getContext('2d');
+                const expenseChart = new Chart(expenseCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Rivojlantirish', 'Marketing', 'Operatsiyalar', 'Mamuriy'],
+                        datasets: [{
+                            data: [22000, 12000, 7500, 0],
+                            backgroundColor: [
+                                '#1a56db',
+                                '#0d9488',
+                                '#3b82f6',
+                                '#6366f1'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        const label = context.label || '';
+                                        const value = context.raw || 0;
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const percentage = Math.round((value / total) * 100);
+                                        return `${label}: $${value} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Initialize animations
+            function triggerAnimations() {
+                const fadeElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right');
+
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.classList.add('visible');
+                    }
+                });
+            }
+
+            // Initialize everything
+            initializeCharts();
+            triggerAnimations();
+
+            // Trigger animations on load
+            setTimeout(triggerAnimations, 300);
+        });
+    </script>
+</body>
+
+</html>
