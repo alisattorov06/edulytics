@@ -922,10 +922,65 @@
             opacity: 1;
             transform: translateX(0);
         }
+
+        /* ===== EDULYTICS INTRO ===== */
+#edulytics-intro {
+    position: fixed;
+    inset: 0;
+    background: #00000028;
+    backdrop-filter: blur(8px)  ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    perspective: 1200px; /* 3D effect */
+    transition: opacity 0.8s ease;
+}
+
+#edulytics-intro img {
+    width: 600px; 
+    transform-style: preserve-3d;
+    animation: edulyticsSpinX 3.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* BLUR WHILE INTRO */
+body.intro-active {
+    overflow: hidden;
+}
+
+body.intro-active > *:not(#edulytics-intro) {
+    filter: blur(14px);
+    transition: filter 1s ease;
+}
+
+/* X-AXIS ROTATION + SCALE UP */
+@keyframes edulyticsSpinX {
+    0% {
+        transform: rotateY(0deg) scale(0.8);
+        opacity: 0;
+    }
+    15% {
+        opacity: 1;
+    }
+    60% {
+        transform: rotateY(720deg) scale(1);
+    }
+    100% {
+        transform: rotateX(720deg) scale(1.25); /* OXIRIDA KATTALASHADI */
+        opacity: 1;
+    }
+}
+
+
     </style>
 </head>
 
 <body>
+    <!-- EDULYTICS INTRO -->
+    <div id="edulytics-intro">
+        <img src="logo.png" alt="Edulytics Logo">
+    </div>
+
     <!-- Navigation -->
     <div class="nav-container">
         <nav>
@@ -1619,7 +1674,8 @@
                     <h3>Tulakova Ziyodaxon Rivojidinovna</h3>
                     <p style="color: var(--primary-blue); margin-bottom: 0.5rem;">Moliyaviy tahlilchi & Risk menejeri
                     </p>
-                    <p>Oliy matematika kafedrasi katta oʻqituvchisi, fizika-matematika fanlari boʻyicha falsafa doktori, PhD</p>
+                    <p>Oliy matematika kafedrasi katta oʻqituvchisi, fizika-matematika fanlari boʻyicha falsafa doktori,
+                        PhD</p>
                 </div>
 
                 <div class="team-member fade-in">
@@ -1659,7 +1715,8 @@
                 <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
                     <a href="#" class="btn btn-primary"
                         style="background: white; color: var(--primary-blue);">Investitsiya Tafsilotlari</a>
-                    <a href="https://t.me/edulytics" class="btn" style="background: var(--accent-teal);">Aloqa Qilish</a>
+                    <a href="https://t.me/edulytics" class="btn" style="background: var(--accent-teal);">Aloqa
+                        Qilish</a>
                 </div>
             </div>
         </div>
@@ -1684,9 +1741,11 @@
 
             <div style="display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; font-size: 1.5rem;">
                 <a href="https://t.me/edulytics" style="color: white;"><i class="fab fa-telegram"></i></a>
-                <a href="https://www.instagram.com/_sattorov_ali" style="color: white;"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.instagram.com/_sattorov_ali" style="color: white;"><i
+                        class="fab fa-instagram"></i></a>
                 <a href="tel:+998951884565" style="color: white;"><i class="fas fa-phone"></i></a>
-                <a href="mailto:uzedulytics@gmail.com?subject=Edulytics%20platformasi%20bo'yicha%20murojaat&body=Assalomu%20alaykum,%0A%0AMen%20Edulytics%20platformasi%20bo'yicha%20sizga%20murojaat%20qilmoqchiman." style="color: white;"><i class="fas fa-envelope"></i></a>
+                <a href="mailto:uzedulytics@gmail.com?subject=Edulytics%20platformasi%20bo'yicha%20murojaat&body=Assalomu%20alaykum,%0A%0AMen%20Edulytics%20platformasi%20bo'yicha%20sizga%20murojaat%20qilmoqchiman."
+                    style="color: white;"><i class="fas fa-envelope"></i></a>
             </div>
 
             <div class="copyright">
@@ -1949,6 +2008,23 @@
             // Trigger animations on load
             setTimeout(triggerAnimations, 300);
         });
+        document.addEventListener("DOMContentLoaded", () => {
+    document.body.classList.add("intro-active");
+
+    setTimeout(() => {
+        const intro = document.getElementById("edulytics-intro");
+
+        intro.style.opacity = "0";
+
+        document.body.classList.remove("intro-active");
+
+        setTimeout(() => {
+            intro.remove();
+        }, 800);
+
+    }, 3200); // logo animation time
+});
+
     </script>
 </body>
 
