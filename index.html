@@ -173,7 +173,7 @@
         .btn {
             display: inline-block;
             padding: 0.85rem 2rem;
-            border-radius: 0.5rem;
+            border-radius: 15px;
             font-weight: 600;
             font-size: 1rem;
             text-decoration: none;
@@ -219,6 +219,65 @@
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
         }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn-rgb {
+            position: relative;
+            background: #3c3939;
+            color: var(--primary-blue);
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-rgb::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(90deg,
+                    #4285F4,
+                    #EA4335,
+                    #FBBC05,
+                    #34A853,
+                    #4285F4);
+            background-size: 300% 300%;
+            animation: google-rgb 5s linear infinite;
+            border-radius: 15px;
+            z-index: -2;
+        }
+
+        /* Button ichki qismi */
+        .btn-rgb::after {
+            content: "";
+            position: absolute;
+            inset: 3px;
+            background: white;
+            border-radius: 15px;
+            z-index: -1;
+        }
+
+        /* Hover — faqat yengil ko‘tarilish */
+        .btn-rgb:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* RGB animatsiya */
+        @keyframes google-rgb {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            100% {
+                background-position: 300% 50%;
+            }
+        }
+
 
         /* ===== HERO SECTION ===== */
         .hero {
@@ -924,54 +983,57 @@
         }
 
         /* ===== EDULYTICS INTRO ===== */
-#edulytics-intro {
-    position: fixed;
-    inset: 0;
-    background: #00000028;
-    backdrop-filter: blur(8px)  ;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 99999;
-    perspective: 1200px; /* 3D effect */
-    transition: opacity 0.8s ease;
-}
+        #edulytics-intro {
+            position: fixed;
+            inset: 0;
+            background: #00000028;
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            perspective: 1200px;
+            /* 3D effect */
+            transition: opacity 0.8s ease;
+        }
 
-#edulytics-intro img {
-    width: 600px; 
-    transform-style: preserve-3d;
-    animation: edulyticsSpinX 3.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
+        #edulytics-intro img {
+            width: 600px;
+            transform-style: preserve-3d;
+            animation: edulyticsSpinX 3.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
 
-/* BLUR WHILE INTRO */
-body.intro-active {
-    overflow: hidden;
-}
+        /* BLUR WHILE INTRO */
+        body.intro-active {
+            overflow: hidden;
+        }
 
-body.intro-active > *:not(#edulytics-intro) {
-    filter: blur(14px);
-    transition: filter 1s ease;
-}
+        body.intro-active>*:not(#edulytics-intro) {
+            filter: blur(14px);
+            transition: filter 1s ease;
+        }
 
-/* X-AXIS ROTATION + SCALE UP */
-@keyframes edulyticsSpinX {
-    0% {
-        transform: rotateY(0deg) scale(0.8);
-        opacity: 0;
-    }
-    15% {
-        opacity: 1;
-    }
-    60% {
-        transform: rotateY(720deg) scale(1);
-    }
-    100% {
-        transform: rotateX(720deg) scale(1.25); /* OXIRIDA KATTALASHADI */
-        opacity: 1;
-    }
-}
+        /* X-AXIS ROTATION + SCALE UP */
+        @keyframes edulyticsSpinX {
+            0% {
+                transform: rotateY(0deg) scale(0.8);
+                opacity: 0;
+            }
 
+            15% {
+                opacity: 1;
+            }
 
+            60% {
+                transform: rotateY(720deg) scale(1);
+            }
+
+            100% {
+                transform: rotateX(720deg) scale(1.25);
+                /* OXIRIDA KATTALASHADI */
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 
@@ -1017,8 +1079,16 @@ body.intro-active > *:not(#edulytics-intro) {
                 Loyiha ta'lim bozorida shaffoflik, ishonch va qulaylik yaratish uchun ishlab chiqilgan.
             </p>
             <div class="fade-in">
-                <a href="#problems" class="btn btn-primary">Batafsil-></a>
-                <a href="#financial" class="btn btn-demo">Moliyaviy Ko'rsatkichlar</a>
+                <div class="fade-in hero-actions">
+                    <a href="#problems" class="btn btn-primary btn-rgb">
+                        <i class="fas fa-info-circle"></i>
+                        Batafsil →
+                    </a>
+                    <a href="#financial" class="btn btn-demo">
+                        <i class="fas fa-chart-line"></i>
+                        Moliyaviy Ko'rsatkichlar
+                    </a>
+                </div>
             </div>
         </div>
         <div class="hero-bg"></div>
@@ -1277,7 +1347,8 @@ body.intro-active > *:not(#edulytics-intro) {
             <div class="chatbot-container fade-in">
                 <div class="chatbot-header">
                     <div class="chatbot-icon">
-                        <i class="fas fa-robot"></i>
+                        <image src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Google-gemini-icon.png?20250728093927" alt="ai.png" width="40" height="40" >
+
                     </div>
                     <div>
                         <h3 style="margin-bottom: 0.25rem;">Edulytics AI Yordamchi</h3>
@@ -1478,7 +1549,7 @@ body.intro-active > *:not(#edulytics-intro) {
                     <div class="timeline-content">
                         <h3 style="margin-bottom: 0.5rem;">Mobil Ilova Chiqarilishi</h3>
                         <p>Kirish imkoniyatini va foydalanuvchi ishtirokini oshirish uchun iOS va Android mobil
-                            ilovalari. 2025-yil 4-chorakda rejalashtirilgan.</p>
+                            ilovalari. 2026-yil 2-chorakda rejalashtirilgan.</p>
                         <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem;">
                             <span
                                 style="background: var(--gray-100); padding: 0.25rem 0.75rem; border-radius: 2rem; font-size: 0.85rem;">+40%
@@ -2009,21 +2080,21 @@ body.intro-active > *:not(#edulytics-intro) {
             setTimeout(triggerAnimations, 300);
         });
         document.addEventListener("DOMContentLoaded", () => {
-    document.body.classList.add("intro-active");
+            document.body.classList.add("intro-active");
 
-    setTimeout(() => {
-        const intro = document.getElementById("edulytics-intro");
+            setTimeout(() => {
+                const intro = document.getElementById("edulytics-intro");
 
-        intro.style.opacity = "0";
+                intro.style.opacity = "0";
 
-        document.body.classList.remove("intro-active");
+                document.body.classList.remove("intro-active");
 
-        setTimeout(() => {
-            intro.remove();
-        }, 800);
+                setTimeout(() => {
+                    intro.remove();
+                }, 800);
 
-    }, 3200); // logo animation time
-});
+            }, 3200); // logo animation time
+        });
 
     </script>
 </body>
