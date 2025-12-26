@@ -12,7 +12,6 @@
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* ===== RESET & BASE STYLES ===== */
         * {
             margin: 0;
             padding: 0;
@@ -55,7 +54,6 @@
             padding: 0 2rem;
         }
 
-        /* ===== NAVIGATION ===== */
         .nav-container {
             position: fixed;
             top: 0;
@@ -135,7 +133,6 @@
             transition: left 0.3s ease, width 0.3s ease;
         }
 
-        /* ===== SECTIONS ===== */
         section {
             min-height: 100vh;
             display: flex;
@@ -169,7 +166,6 @@
             z-index: -1;
         }
 
-        /* ===== BUTTONS ===== */
         .btn {
             display: inline-block;
             padding: 0.85rem 2rem;
@@ -251,7 +247,6 @@
             z-index: -2;
         }
 
-        /* Button ichki qismi */
         .btn-rgb::after {
             content: "";
             position: absolute;
@@ -261,13 +256,11 @@
             z-index: -1;
         }
 
-        /* Hover — faqat yengil ko‘tarilish */
         .btn-rgb:hover {
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
         }
 
-        /* RGB animatsiya */
         @keyframes google-rgb {
             0% {
                 background-position: 0% 50%;
@@ -278,8 +271,6 @@
             }
         }
 
-
-        /* ===== HERO SECTION ===== */
         .hero {
             background: linear-gradient(135deg, #f6f9ff 0%, #ffffff 100%);
             text-align: center;
@@ -323,7 +314,6 @@
             z-index: -1;
         }
 
-        /* ===== PROBLEMS SECTION ===== */
         .problems-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -358,7 +348,6 @@
             color: var(--primary-dark);
         }
 
-        /* ===== SOLUTION SECTION ===== */
         .solution-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -396,7 +385,6 @@
             justify-content: center;
         }
 
-        /* ===== FEATURES SECTION ===== */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -423,7 +411,6 @@
             color: var(--primary-dark);
         }
 
-        /* ===== WEBVIEW SECTION ===== */
         .webview-container {
             background: white;
             border-radius: 1rem;
@@ -574,7 +561,6 @@
             text-decoration: underline;
         }
 
-        /* ===== CHATBOT SECTION ===== */
         .chatbot-container {
             max-width: 800px;
             margin: 2rem auto 0;
@@ -671,7 +657,6 @@
             background: var(--gray-200);
         }
 
-        /* ===== FINANCIAL SECTION ===== */
         .financial-data {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -708,7 +693,6 @@
             box-shadow: var(--shadow-md);
         }
 
-        /* ===== EXPANSION SECTION ===== */
         .timeline {
             max-width: 800px;
             margin: 3rem auto 0;
@@ -754,7 +738,6 @@
             flex: 1;
         }
 
-        /* ===== VALUE SECTION ===== */
         .value-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -776,12 +759,26 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* ===== TEAM SECTION ===== */
         .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
+            /* 3 ta ustun */
             gap: 2.5rem;
             margin-top: 3rem;
+        }
+
+        @media (max-width: 992px) {
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+                /* Kichik ekranlarda 2 ta */
+            }
+        }
+
+        @media (max-width: 576px) {
+            .team-grid {
+                grid-template-columns: 1fr;
+                /* Mobilda 1 ta */
+            }
         }
 
         .team-member {
@@ -821,8 +818,6 @@
             margin-bottom: 1rem;
         }
 
-
-        /* ===== INVESTOR CTA ===== */
         .investor-cta {
             background: linear-gradient(135deg, var(--primary-dark), var(--primary-blue));
             color: white;
@@ -847,7 +842,6 @@
             opacity: 0.9;
         }
 
-        /* ===== FOOTER ===== */
         footer {
             background: var(--primary-dark);
             color: white;
@@ -882,7 +876,6 @@
             font-size: 0.9rem;
         }
 
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 992px) {
             .hero-title {
                 font-size: 2.8rem;
@@ -948,7 +941,6 @@
             }
         }
 
-        /* ===== ANIMATIONS ===== */
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
@@ -982,7 +974,6 @@
             transform: translateX(0);
         }
 
-        /* ===== EDULYTICS INTRO ===== */
         #edulytics-intro {
             position: fixed;
             inset: 0;
@@ -993,7 +984,6 @@
             justify-content: center;
             z-index: 99999;
             perspective: 1200px;
-            /* 3D effect */
             transition: opacity 0.8s ease;
         }
 
@@ -1003,7 +993,6 @@
             animation: edulyticsSpinX 3.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
-        /* BLUR WHILE INTRO */
         body.intro-active {
             overflow: hidden;
         }
@@ -1013,7 +1002,6 @@
             transition: filter 1s ease;
         }
 
-        /* X-AXIS ROTATION + SCALE UP */
         @keyframes edulyticsSpinX {
             0% {
                 transform: rotateY(0deg) scale(0.8);
@@ -1030,20 +1018,31 @@
 
             100% {
                 transform: rotateX(720deg) scale(1.25);
-                /* OXIRIDA KATTALASHADI */
                 opacity: 1;
             }
+        }
+
+        .fa-spinner {
+            margin-right: 0.5rem;
+        }
+
+        .chatbot-input:disabled {
+            background-color: var(--gray-100);
+            cursor: not-allowed;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
     </style>
 </head>
 
 <body>
-    <!-- EDULYTICS INTRO -->
     <div id="edulytics-intro">
         <img src="logo.png" alt="Edulytics Logo">
     </div>
 
-    <!-- Navigation -->
     <div class="nav-container">
         <nav>
             <div class="logo">
@@ -1067,7 +1066,6 @@
         <div class="nav-indicator" id="navIndicator"></div>
     </div>
 
-    <!-- Section 1: Startup Name & Concept -->
     <section id="home" class="hero">
         <div class="container">
             <div class="section-number">01</div>
@@ -1094,7 +1092,6 @@
         <div class="hero-bg"></div>
     </section>
 
-    <!-- Section 2: Problems -->
     <section id="problems">
         <div class="container">
             <div class="section-number">02</div>
@@ -1144,7 +1141,6 @@
         </div>
     </section>
 
-    <!-- Section 3: Solution -->
     <section id="solution">
         <div class="container">
             <div class="section-number">03</div>
@@ -1248,7 +1244,6 @@
         </div>
     </section>
 
-    <!-- Section 4: Platform Features -->
     <section id="features">
         <div class="container">
             <div class="section-number">04</div>
@@ -1332,9 +1327,6 @@
         </div>
     </section>
 
-
-
-    <!-- Section 6: AI Chatbot -->
     <section id="chatbot">
         <div class="container">
             <div class="section-number">06</div>
@@ -1347,13 +1339,13 @@
             <div class="chatbot-container fade-in">
                 <div class="chatbot-header">
                     <div class="chatbot-icon">
-                        <image src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Google-gemini-icon.png?20250728093927" alt="ai.png" width="40" height="40" >
-
+                        <image
+                            src="https://upload.wikimedia.org/wikipedia/commons/b/b5/Google-gemini-icon.png?20250728093927"
+                            alt="ai.png" width="40" height="40">
                     </div>
                     <div>
                         <h3 style="margin-bottom: 0.25rem;">Edulytics AI Yordamchi</h3>
-                        <p style="opacity: 0.9; font-size: 0.9rem;">AI demo rejimda, faqat avtomatlashtirilgan
-                            savollarga javob beradi</p>
+                        <p style="opacity: 0.9; font-size: 0.9rem;">Gemini AI bilan integratsiyalangan yordamchi</p>
                     </div>
                 </div>
 
@@ -1364,28 +1356,9 @@
                             kurslar, martaba yo'llari yoki ta'lim tavsiyalari haqida so'rashingiz mumkin.
                         </div>
                     </div>
-                    <div class="message message-user">
-                        <div class="message-content">
-                            Yaxshi dasturlash kurslarini tavsiya qila olasizmi?
-                        </div>
-                    </div>
-                    <div class="message message-bot">
-                        <div class="message-content">
-                            Albatta! Joriy trendlar va o'quvchi fikrlari asosida men quyidagilarni tavsiya qilaman:
-                            <br><br>
-                            1. <strong>Web Dasturlash Bootcamp</strong> (4.8★) - To'liq stack dasturlash ta'limi
-                            <br>
-                            2. <strong>Python for Data Science</strong> (4.7★) - Analitika va mashina o'rganishga
-                            qaratilgan
-                            <br>
-                            3. <strong>Mobil Ilova Dasturlash</strong> (4.6★) - React Native bilan iOS & Android
-                            <br><br>
-                            Ushbu kurslardan birortasi haqida batafsil ma'lumot kerakmi?
-                        </div>
-                    </div>
                 </div>
 
-                <div class="chatbot-quick-questions">
+                <div class="chatbot-quick-questions" id="quickQuestions">
                     <div class="quick-question" data-question="Boshlovchilar uchun eng yaxshi kurslar qaysilar?">
                         Boshlovchilar uchun kurslar</div>
                     <div class="quick-question" data-question="Biznesga oid kurslarni tavsiya qiling">Biznes kurslari
@@ -1405,12 +1378,11 @@
             </div>
 
             <div style="text-align: center; margin-top: 2rem;" class="fade-in">
-                <p>AI yordamchi real vaqtda 24/7 ishlaydi va har bir savolga 2 soniya ichida javob beradi.</p>
+                <p>AI yordamchi Gemini AI asosida ishlaydi va har bir savolga javob beradi.</p>
             </div>
         </div>
     </section>
 
-    <!-- Section 7: Financial Analysis -->
     <section id="financial">
         <div class="container">
             <div class="section-number">07</div>
@@ -1518,7 +1490,6 @@
                 </div>
             </div>
 
-            <!-- Investor CTA -->
             <div class="investor-cta fade-in">
                 <h2>Investorlar Uchun Ajoyib Imkoniyat</h2>
                 <p>Edulytics - bu tez o'sadigan ta'lim texnologiyalari bozorida birinchi o'rinni egallash imkoniyati.
@@ -1532,7 +1503,6 @@
         </div>
     </section>
 
-    <!-- Section 8: Modernization & Expansion -->
     <section id="expansion">
         <div class="container">
             <div class="section-number">08</div>
@@ -1609,7 +1579,6 @@
         </div>
     </section>
 
-    <!-- Section 9: Investor Value -->
     <section id="value">
         <div class="container">
             <div class="section-number">09</div>
@@ -1728,36 +1697,72 @@
             </p>
 
             <div class="team-grid">
+                <!-- Existing member 1 -->
                 <div class="team-member fade-in">
                     <div class="member-avatar">
-                        <image src="alixon.png" alt="Sattorov Alixon">
+                        <img src="zokirov.png" alt="Sattorov Alixon">
+                    </div>
+                    <h3>Zokirov Sanjar</h3>
+                    <p style="color: var(--primary-blue); margin-bottom: 0.5rem;">Loyiha bo'yicha ilmiy rahbar</p>
+                    <p>Axborot texnologiyalari va tizimlari kafedrasi dotsenti.</p>
+                </div>
+
+                <!-- Existing member 2 -->
+                <div class="team-member fade-in">
+                    <div class="member-avatar">
+                        <img src="alixon.png" alt="Sattorov Alixon">
                     </div>
                     <h3>Sattorov Alixon</h3>
                     <p style="color: var(--primary-blue); margin-bottom: 0.5rem;">Loyiha bosh rahbari & Mahsulot
-                        Arxitektori & Fronted dasturchi</p>
-                    <p>Loyihani tuzish va boshlang'ich dizaynlarni yaratish.</p>
+                        Arxitektori & Frontend dasturchi
+                    </p>
+                    <p>Farg'ona davlat texnika universiteti ATT fakulteti Kompyuter injinering yo'nalishi bakalavr
+                        talabasi.</p>
                 </div>
 
+                <!-- Existing member 3 -->
                 <div class="team-member fade-in">
                     <div class="member-avatar">
-                        <image src="ziyodaxon.jpg" alt="Tulakova Ziyodaxon Rivojidinovna">
+                        <img src="ziyodaxon.jpg" alt="Muxammadjonov Mutaljon">
                     </div>
-                    <h3>Tulakova Ziyodaxon Rivojidinovna</h3>
+                    <h3>Tulakova Ziyoda Rivojiddinova</h3>
                     <p style="color: var(--primary-blue); margin-bottom: 0.5rem;">Moliyaviy tahlilchi & Risk menejeri
                     </p>
                     <p>Oliy matematika kafedrasi katta oʻqituvchisi, fizika-matematika fanlari boʻyicha falsafa doktori,
-                        PhD</p>
+                        PhD.</p>
                 </div>
 
+
+                <!-- NEW MEMBER 5 -->
                 <div class="team-member fade-in">
                     <div class="member-avatar">
-                        <image src="mutaljon.jpg" alt="Muxammadjonov Mutaljon">
+                        <div
+                            style="width: 130px; height: 130px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-blue), var(--accent-teal)); display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem; border: 3px solid var(--primary-blue);">
+                            <image src="arziqulov.JPG" alt="arziqulov"
+                                style="width: 100%; height: 100%; border-radius: 50%;">
+                        </div>
+                    </div>
+                    <h3>Arziqulov Zafarjon</h3>
+                    <p style="color: var(--primary-blue); margin-bottom: 0.5rem;">Moliyaviy tahlilchi & Risk menejeri
+                    </p>
+                    <p>Oliy matematika kafedrasi katta oʻqituvchisi, fizika-matematika fanlari boʻyicha falsafa doktori,
+                        PhD.</p>
+                </div>
+
+                <!-- NEW MEMBER 6 -->
+                <div class="team-member fade-in">
+                    <div class="member-avatar">
+                        <div
+                            style="width: 130px; height: 130px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-blue), var(--accent-teal)); display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem; border: 3px solid var(--primary-blue);">
+                            <image src="mutaljon1.jpg" alt="mutaljon"
+                                style="width: 100%; height: 100%; border-radius: 50%;">
+                        </div>
                     </div>
                     <h3>Muxammadjonov Mutaljon</h3>
                     <p style="color: var(--primary-blue); margin-bottom: 0.5rem;">Dizayn & UX bo'yicha ma'sul</p>
-                    <p>Ta'lim interfeyslari va foydalanuvchi tajribasi bo'yicha ixtisoslashgan dizayner.</p>
+                    <p>Farg'ona davlat texnika universiteti ATT fakulteti Kompyuter injinering yo'nalishi bakalavr
+                        talabasi.</p>
                 </div>
-
             </div>
 
             <div style="margin-top: 4rem; text-align: center;" class="fade-in">
@@ -1784,7 +1789,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-logo">Edulytics</div>
@@ -1817,7 +1821,7 @@
     </footer>
 
     <script>
-        // Navigation indicator
+       // Navigation indicator
         document.addEventListener('DOMContentLoaded', function () {
             // Navigation indicator
             const navLinks = document.querySelectorAll('.nav-links a');
@@ -2086,9 +2090,7 @@
 
             }, 3200); // logo animation time
         });
-
     </script>
 </body>
 
 </html>
-
